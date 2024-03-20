@@ -28,33 +28,45 @@ public class Options {
     }
 
     public void setX(double x) {
+        if(x != this.x)
+            logChange("x", "Changing option X position to: %.1f (m)%n", x);
         this.x = x;
-        logChange("x", "Changing option X position to: %.1f (m)%n", x);
     }
 
     public void setY(double y) {
+        if(y != this.y)
+            logChange("y", "Changing option Y position to: %.1f (m)%n", y);
         this.y = y;
-        logChange("y", "Changing option Y position to: %.1f (m)%n", y);
     }
 
     public void setVelocityX(double velocityX) {
+        if(velocityX != this.velocityX)
+            logChange("velocityX", "Changing option VelocityX to: %.2f (m/s)%n", velocityX);
         this.velocityX = velocityX;
-        logChange("velocityX", "Changing option VelocityX to: %.2f (m/s)%n", velocityX);
     }
 
     public void setVelocityY(double velocityY) {
+        if(velocityY != this.velocityY)
+            logChange("velocityY", "Changing option VelocityY to: %.2f (m/s)%n", velocityY);
         this.velocityY = velocityY;
-        logChange("velocityY", "Changing option VelocityY to: %.2f (m/s)%n", velocityY);
+    }
+
+    public void setDeltaT(double deltaT) {
+        if(deltaT != this.deltaT)
+            logChange("deltaT", "Changing option Delta t to: %.2f%n", deltaT);
+        this.deltaT = deltaT;
     }
 
     public void setAirResistance(double airResistance) {
+        if(airResistance != this.airResistance)
+            logChange("airResistance", "Changing option Air Resistance to: %.2f%n", airResistance);
         this.airResistance = airResistance;
-        logChange("airResistance", "Changing option Air Resistance to: %.2f%n", airResistance);
     }
 
     public void setUpgradedEulersMethod(boolean isUpgradedEulersMethod) {
+        if(isUpgradedEulersMethod != this.isUpgradedEulersMethod)
+            logChange("upgradedEulersMethod", "Setting Upgraded Euler's Method to: %s%n", isUpgradedEulersMethod ? "enabled" : "disabled");
         this.isUpgradedEulersMethod = isUpgradedEulersMethod;
-        logChange("upgradedEulersMethod", "Setting Upgraded Euler's Method to: %s%n", isUpgradedEulersMethod ? "enabled" : "disabled");
     }
 
     public double getX() {
@@ -92,10 +104,5 @@ public class Options {
 
     public double getDeltaT() {
         return deltaT;
-    }
-
-    public void setDeltaT(double deltaT) {
-        this.deltaT = deltaT;
-        logChange("deltaT", "Changing option Delta t to: %.2f%n", deltaT);
     }
 }
