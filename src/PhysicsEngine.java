@@ -10,14 +10,20 @@ public class PhysicsEngine {
         this.options = new Options();
     }
 
-    public List<Point2D.Double> simulateProjectile(double posX, double posY, double velX, double velY, double airResistance, boolean useImprovedEuler, double deltaT) {
+    public List<Point2D.Double> simulateProjectile(Options options) {
+        double posX = options.getX();
+        double posY = options.getY();
+        double velX = options.getVelocityX();
+        double velY = options.getVelocityY();
+        double airResistance = options.getResistance();
+        boolean useImprovedEuler = options.isUpgradedEulersMethod();
+        double deltaT = options.getDeltaT();
         List<Point2D.Double> trajectory = new ArrayList<>();
-        final double gravity = 9.807;
 
         while (posY >= 0) {
             trajectory.add(new Point2D.Double(posX, posY));
             double accX = -airResistance * velX;
-            double accY = -gravity - airResistance * velY;
+            double accY = -GRAVITY - airResistance * velY;
 
             if (useImprovedEuler) {
                 double velXHalfStep = velX + accX * (deltaT / 2);

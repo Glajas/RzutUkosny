@@ -8,14 +8,16 @@ public class Options {
     private double velocityY;
     private double airResistance;
     private boolean isUpgradedEulersMethod;
+    private double deltaT;
     private Map<String, String> changesLog;
 
     public Options() {
         this.x = 0;
         this.y = 1.0;
-        this.velocityX = 2.5;
-        this.velocityY = -2 * PhysicsEngine.GRAVITY;
+        this.velocityX = 2*PhysicsEngine.GRAVITY;
+        this.velocityY = PhysicsEngine.GRAVITY;
         this.airResistance = 0.43;
+        this.deltaT = 0.1;
         this.isUpgradedEulersMethod = false;
         this.changesLog = new HashMap<>();
     }
@@ -86,5 +88,14 @@ public class Options {
 
     public void clearChangesLog() {
         changesLog.clear();
+    }
+
+    public double getDeltaT() {
+        return deltaT;
+    }
+
+    public void setDeltaT(double deltaT) {
+        this.deltaT = deltaT;
+        logChange("deltaT", "Changing option Delta t to: %.2f%n", deltaT);
     }
 }
