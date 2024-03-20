@@ -1,29 +1,25 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Comparator;
 import java.util.List;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame {
     private PhysicsEngine physicsEngine;
-    private JSlider sliderVelocityX, sliderVelocityY, sliderAirResistance;
     private JTextField textFieldDeltaT, textFieldVelocityX, textFieldVelocityY, textFieldAirResistance, textFieldX, textFieldY;
     private JCheckBox checkboxUpgradedEuler;
     private JButton buttonSimulate;
-    private DrawingPanel drawingPanel;
-    private TrajectoryFrame trajectoryFrame;
-
 
     public GUI() {
         this.physicsEngine = new PhysicsEngine();
         setTitle("Projectile Simulation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
         initializeComponents();
         setupListeners();
         pack();
@@ -32,10 +28,6 @@ public class GUI extends JFrame {
     }
 
     private void initializeComponents() {
-        sliderVelocityX = new JSlider(JSlider.HORIZONTAL, -100, 100, (int) physicsEngine.options.getVelocityX());
-        sliderVelocityY = new JSlider(JSlider.HORIZONTAL, -100, 100, (int) physicsEngine.options.getVelocityY());
-        sliderAirResistance = new JSlider(JSlider.HORIZONTAL, 0, 100, (int) (physicsEngine.options.getResistance() * 100));
-
         textFieldVelocityX = new JTextField(String.valueOf(physicsEngine.options.getVelocityX()), 5);
         textFieldDeltaT = new JTextField(String.valueOf(physicsEngine.options.getDeltaT()), 5);
         textFieldVelocityY = new JTextField(String.valueOf(physicsEngine.options.getVelocityY()), 5);
@@ -46,112 +38,26 @@ public class GUI extends JFrame {
         checkboxUpgradedEuler = new JCheckBox("Use Upgraded Euler's Method", physicsEngine.options.isUpgradedEulersMethod());
         buttonSimulate = new JButton("Simulate");
 
-        JPanel panelVelocityX = new JPanel();
-        panelVelocityX.add(new JLabel("Velocity X:"));
-        panelVelocityX.add(textFieldVelocityX);
-        panelVelocityX.add(sliderVelocityX);
+        JPanel panelSettings = new JPanel(new GridLayout(0, 2, 10, 10));
+        panelSettings.add(new JLabel("Velocity X:"));
+        panelSettings.add(textFieldVelocityX);
+        panelSettings.add(new JLabel("Velocity Y:"));
+        panelSettings.add(textFieldVelocityY);
+        panelSettings.add(new JLabel("Air Resistance:"));
+        panelSettings.add(textFieldAirResistance);
+        panelSettings.add(new JLabel("Delta T:"));
+        panelSettings.add(textFieldDeltaT);
+        panelSettings.add(new JLabel("X Position:"));
+        panelSettings.add(textFieldX);
+        panelSettings.add(new JLabel("Y Position:"));
+        panelSettings.add(textFieldY);
+        panelSettings.add(checkboxUpgradedEuler);
+        panelSettings.add(buttonSimulate);
 
-        JPanel panelVelocityY = new JPanel();
-        panelVelocityY.add(new JLabel("Velocity Y:"));
-        panelVelocityY.add(textFieldVelocityY);
-        panelVelocityY.add(sliderVelocityY);
-
-        JPanel panelAirResistance = new JPanel();
-        panelAirResistance.add(new JLabel("Air Resistance:"));
-        panelAirResistance.add(textFieldAirResistance);
-        panelAirResistance.add(sliderAirResistance);
-
-        JPanel panelDeltaT = new JPanel();
-        panelDeltaT.add(new JLabel("Delta t:"));
-        panelDeltaT.add(textFieldDeltaT);
-
-        JPanel panelXPosition = new JPanel();
-        panelXPosition.add(new JLabel("X Position:"));
-        panelXPosition.add(textFieldX);
-
-        JPanel panelYPosition = new JPanel();
-        panelYPosition.add(new JLabel("Y Position:"));
-        panelYPosition.add(textFieldY);
-
-        JPanel panelUpgradedEuler = new JPanel();
-        panelUpgradedEuler.add(checkboxUpgradedEuler);
-
-        JPanel panelSimulateButton = new JPanel();
-        panelSimulateButton.add(buttonSimulate);
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
-        controlPanel.add(panelVelocityX);
-        controlPanel.add(panelVelocityY);
-        controlPanel.add(panelAirResistance);
-        controlPanel.add(panelDeltaT);
-        controlPanel.add(panelXPosition);
-        controlPanel.add(panelYPosition);
-        controlPanel.add(panelUpgradedEuler);
-        controlPanel.add(panelSimulateButton);
-
-        add(controlPanel, BorderLayout.NORTH);
-
-        drawingPanel = new DrawingPanel();
-        add(drawingPanel, BorderLayout.CENTER);
+        add(panelSettings, BorderLayout.CENTER);
     }
 
     private void setupListeners() {
-        sliderVelocityX.addChangeListener(e -> {
-            double value = sliderVelocityX.getValue();
-            textFieldVelocityX.setText(Double.toString(value));
-            physicsEngine.options.setVelocityX(value);
-        });
-
-        sliderVelocityY.addChangeListener(e -> {
-            double value = sliderVelocityY.getValue();
-            textFieldVelocityY.setText(Double.toString(value));
-            physicsEngine.options.setVelocityY(value);
-        });
-
-        sliderAirResistance.addChangeListener(e -> {
-            double value = sliderAirResistance.getValue() / 100.0;
-            textFieldAirResistance.setText(Double.toString(value));
-            physicsEngine.options.setAirResistance(value);
-        });
-
-        textFieldVelocityX.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldVelocityX.getText());
-            physicsEngine.options.setVelocityX(value);
-            sliderVelocityX.setValue((int) value);
-        });
-
-        textFieldVelocityY.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldVelocityY.getText());
-            physicsEngine.options.setVelocityY(value);
-            sliderVelocityY.setValue((int) value);
-        });
-
-        textFieldAirResistance.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldAirResistance.getText());
-            physicsEngine.options.setAirResistance(value);
-            sliderAirResistance.setValue((int) (value * 100));
-        });
-
-        textFieldDeltaT.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldDeltaT.getText());
-            physicsEngine.options.setDeltaT(value);
-        });
-
-        textFieldX.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldX.getText());
-            physicsEngine.options.setX(value);
-        });
-
-        textFieldY.addActionListener(e -> {
-            double value = Double.parseDouble(textFieldY.getText());
-            physicsEngine.options.setY(value);
-        });
-
-        checkboxUpgradedEuler.addActionListener(e -> {
-            physicsEngine.options.setUpgradedEulersMethod(checkboxUpgradedEuler.isSelected());
-        });
-
         buttonSimulate.addActionListener(e -> {
             physicsEngine.options.setX(Double.parseDouble(textFieldX.getText()));
             physicsEngine.options.setY(Double.parseDouble(textFieldY.getText()));
@@ -165,77 +71,114 @@ public class GUI extends JFrame {
             physicsEngine.options.clearChangesLog();
 
             List<Point2D.Double> trajectoryPoints = physicsEngine.simulateProjectile(physicsEngine.options);
-
-            DrawingPanel drawingPanel = new DrawingPanel(trajectoryFrame);
-            trajectoryFrame = new TrajectoryFrame("Trajektoria pocisku", drawingPanel);
-            trajectoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            drawingPanel.setTrajectoryPoints(trajectoryPoints);
-            drawingPanel.repaint();
-
-            trajectoryFrame.setVisible(true);
+            showTrajectoryInNewWindow(trajectoryPoints);
         });
     }
 
-    class TrajectoryFrame extends JFrame {
-        private DrawingPanel drawingPanel;
-
-        public TrajectoryFrame(String title, DrawingPanel drawingPanel) {
-            super(title);
-            this.drawingPanel = drawingPanel;
-            this.setLayout(new BorderLayout());
-            this.add(drawingPanel, BorderLayout.CENTER);
-            this.setSize(800, 600);
-            this.setLocationRelativeTo(null);
-        }
+    private void showTrajectoryInNewWindow(List<Point2D.Double> trajectoryPoints) {
+        JFrame trajectoryFrame = new JFrame("Trajectory Visualization");
+        DrawingPanel drawingPanel = new DrawingPanel();
+        drawingPanel.setTrajectoryPoints(trajectoryPoints);
+        trajectoryFrame.add(drawingPanel);
+        trajectoryFrame.setSize(800, 600);
+        trajectoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        trajectoryFrame.setLocationRelativeTo(null);
+        trajectoryFrame.setVisible(true);
     }
 
     class DrawingPanel extends JPanel {
-        private TrajectoryFrame trajectoryFrame;
-
-        public DrawingPanel(TrajectoryFrame trajectoryFrame) {
-            this.trajectoryFrame = trajectoryFrame;
-        }
-        public DrawingPanel() {
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        }
-
         private List<Point2D.Double> trajectoryPoints = new ArrayList<>();
+        private double scaleFactor = 10.0;
+        private String hoverText = "";
+
+        public DrawingPanel() {
+            setLayout(new BorderLayout());
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+            JButton buttonIncreaseScale = new JButton("+");
+            JButton buttonDecreaseScale = new JButton("-");
+
+            buttonIncreaseScale.addActionListener(e -> setScaleFactor(scaleFactor + 1));
+            buttonDecreaseScale.addActionListener(e -> setScaleFactor(Math.max(1, scaleFactor - 1)));
+
+            buttonPanel.add(buttonDecreaseScale);
+            buttonPanel.add(buttonIncreaseScale);
+
+            this.add(buttonPanel, BorderLayout.NORTH);
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    updateHoverText(e.getX(), e.getY());
+                    repaint();
+                }
+            });
+        }
+
+        private void updateHoverText(int mouseX, int mouseY) {
+            hoverText = "";
+            for (Point2D.Double point : trajectoryPoints) {
+                int x = (int) ((point.x * scaleFactor) + getWidth() / 2);
+                int y = getHeight() - (int) ((point.y * scaleFactor) + getHeight() / 2);
+                if (mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3) {
+                    hoverText = String.format("X: %.2f, Y: %.2f", point.x, point.y);
+                    break;
+                }
+            }
+        }
 
         public void setTrajectoryPoints(List<Point2D.Double> trajectoryPoints) {
             this.trajectoryPoints = trajectoryPoints;
+            repaint();
+        }
+
+        public void setScaleFactor(double scaleFactor) {
+            this.scaleFactor = scaleFactor;
+            repaint();
         }
 
         @Override
         protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
             int width = getWidth();
             int height = getHeight();
 
-            super.paintComponent(g);
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, width, height);
 
-            // Draw axis
             g.setColor(Color.BLACK);
-            g.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
-            g.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
+            g.drawLine(0, height / 2, width, height / 2);
+            g.drawLine(width / 2, 0, width / 2, height);
 
-            double maxX = Math.abs(trajectoryPoints.stream()
-                    .max(Comparator.comparingDouble(p -> p.x))
-                    .map(p -> p.x)
-                    .orElse(0.0));
+            final int markSize = 5;
+            final int interval = (int) scaleFactor;
+            java.util.function.IntPredicate isMultipleOfFive = value -> value % 5 == 0;
 
-            double maxY = Math.abs(trajectoryPoints.stream()
-                    .max(Comparator.comparingDouble(p -> p.y))
-                    .map(p -> p.y)
-                    .orElse(0.0));
+            for (int x = 0; x <= width; x += interval) {
+                int scaledX = (x - width / 2) / interval;
+                if (isMultipleOfFive.test(scaledX) && scaledX != 0) {
+                    g.drawLine(x, height / 2 - markSize, x, height / 2 + markSize);
+                    g.drawString(String.valueOf(scaledX), x - markSize, height / 2 + 2 * markSize);
+                }
+            }
 
-            //TODO: Zmienić skalowanie okna
-            double scaleFactor = 1;//Math.min(width / (2 * maxX), height / (2 * maxY));
+            for (int y = 0; y <= height; y += interval) {
+                int scaledY = (height / 2 - y) / interval;
+                if (isMultipleOfFive.test(scaledY) && scaledY != 0) {
+                    g.drawLine(width / 2 - markSize, y, width / 2 + markSize, y);
+                    g.drawString(String.valueOf(scaledY), width / 2 + 2 * markSize, y + markSize);
+                }
+            }
 
             g.setColor(Color.RED);
             for (Point2D.Double point : trajectoryPoints) {
                 int x = (int) (point.x * scaleFactor) + width / 2;
-                int y = (int) (height - point.y * scaleFactor) - height / 2;
+                int y = height - (int) (point.y * scaleFactor) - height / 2;
                 g.fillOval(x - 3, y - 3, 6, 6);
+            }
+            if (!hoverText.isEmpty()) {
+                g.setColor(Color.BLACK);
+                g.drawString(hoverText, 10, height - 10);
             }
         }
     }

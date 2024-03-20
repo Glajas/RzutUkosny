@@ -94,8 +94,10 @@ public class Options {
     }
 
     public void printChangesLog() {
-        System.out.println("Changes log:");
-        changesLog.values().forEach(System.out::print);
+        if(!changesLog.isEmpty()) {
+            System.out.println("Changes log:");
+            changesLog.values().forEach(System.out::print);
+        }
     }
 
     public void clearChangesLog() {
