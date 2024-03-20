@@ -1,13 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.List;
-import javax.swing.JPanel;
 
 public class GUI extends JFrame {
     private PhysicsEngine physicsEngine;
@@ -88,8 +86,10 @@ public class GUI extends JFrame {
 
     class DrawingPanel extends JPanel {
         private List<Point2D.Double> trajectoryPoints = new ArrayList<>();
-        private double scaleFactor = 10.0;
+        private double scaleFactor = 15.0;
         private String hoverText = "";
+        private Point dragStartPoint = null;
+        private Point2D.Double viewOffset = new Point2D.Double();
 
         public DrawingPanel() {
             setLayout(new BorderLayout());
@@ -112,16 +112,51 @@ public class GUI extends JFrame {
                     updateHoverText(e.getX(), e.getY());
                     repaint();
                 }
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (dragStartPoint != null) {
+                        int dx = e.getX() - dragStartPoint.x;
+                        int dy = e.getY() - dragStartPoint.y;
+                        viewOffset.x += scaleFactor*dx / scaleFactor;
+                        viewOffset.y -= scaleFactor*dy / scaleFactor;
+                        dragStartPoint = e.getPoint();
+                        repaint();
+                    }
+                }
+            });
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    dragStartPoint = e.getPoint();
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    dragStartPoint = null;
+                }
+            });
+
+            addMouseWheelListener(e -> {
+                if (e.getWheelRotation() < 0) {
+                    setScaleFactor(scaleFactor + 1);
+                } else {
+                    setScaleFactor(Math.max(1, scaleFactor - 1));
+                }
             });
         }
 
         private void updateHoverText(int mouseX, int mouseY) {
             hoverText = "";
+            int centerX = (int) (getWidth() / 2 + viewOffset.x);
+            int centerY = (int) (getHeight() / 2 - viewOffset.y);
+
             for (Point2D.Double point : trajectoryPoints) {
-                int x = (int) ((point.x * scaleFactor) + getWidth() / 2);
-                int y = getHeight() - (int) ((point.y * scaleFactor) + getHeight() / 2);
+                int x = (int) ((point.x * scaleFactor) + centerX);
+                int y = (int) (centerY - (point.y * scaleFactor));
                 if (mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3) {
-                    hoverText = String.format("X: %.2f, Y: %.2f", point.x, point.y);
+                    hoverText = String.format("X: %.1f, Y: %.1f", point.x, point.y);
                     break;
                 }
             }
@@ -146,40 +181,45 @@ public class GUI extends JFrame {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, width, height);
 
+            int centerX = (int) (width / 2 + viewOffset.x);
+            int centerY = (int) (height / 2 - viewOffset.y);
             g.setColor(Color.BLACK);
-            g.drawLine(0, height / 2, width, height / 2);
-            g.drawLine(width / 2, 0, width / 2, height);
+            g.drawLine(0, centerY, width, centerY);
+            g.drawLine(centerX, 0, centerX, height);
 
-            final int markSize = 5;
-            final int interval = (int) scaleFactor;
-            java.util.function.IntPredicate isMultipleOfFive = value -> value % 5 == 0;
+            double interval = scaleFactor >= 100 ? 0.25 : scaleFactor >= 50 ? 0.5 : scaleFactor >= 20 ? 1.0 : scaleFactor >= 15 ? 2.0 : scaleFactor >= 10 ? 2.5 : scaleFactor >= 8 ? 4.0 : scaleFactor >= 5 ? 5.0 : 10.0;
+            for (double i = interval; i * scaleFactor + centerX < width; i += interval) {
+                int markXPos = (int) (i * scaleFactor + centerX);
+                g.drawLine(markXPos, centerY - 5, markXPos, centerY + 5);
+                g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), markXPos - 15, centerY - 10);
 
-            for (int x = 0; x <= width; x += interval) {
-                int scaledX = (x - width / 2) / interval;
-                if (isMultipleOfFive.test(scaledX) && scaledX != 0) {
-                    g.drawLine(x, height / 2 - markSize, x, height / 2 + markSize);
-                    g.drawString(String.valueOf(scaledX), x - markSize, height / 2 + 2 * markSize);
-                }
+                int markXNeg = (int) (-i * scaleFactor + centerX);
+                g.drawLine(markXNeg, centerY - 5, markXNeg, centerY + 5);
+                g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), -i), markXNeg - 15, centerY - 10);
             }
 
-            for (int y = 0; y <= height; y += interval) {
-                int scaledY = (height / 2 - y) / interval;
-                if (isMultipleOfFive.test(scaledY) && scaledY != 0) {
-                    g.drawLine(width / 2 - markSize, y, width / 2 + markSize, y);
-                    g.drawString(String.valueOf(scaledY), width / 2 + 2 * markSize, y + markSize);
-                }
+            for (double i = interval; i * scaleFactor + centerY < height; i += interval) {
+                int markYPos = (int) (centerY + i * scaleFactor);
+                g.drawLine(centerX - 5, markYPos, centerX + 5, markYPos);
+                g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), -i), centerX + 10, markYPos + 5);
+
+                int markYNeg = (int) (centerY - i * scaleFactor);
+                g.drawLine(centerX - 5, markYNeg, centerX + 5, markYNeg);
+                g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), centerX + 10, markYNeg + 5);
             }
 
             g.setColor(Color.RED);
             for (Point2D.Double point : trajectoryPoints) {
-                int x = (int) (point.x * scaleFactor) + width / 2;
-                int y = height - (int) (point.y * scaleFactor) - height / 2;
+                int x = (int) ((point.x * scaleFactor) + centerX);
+                int y = (int) (centerY - (point.y * scaleFactor));
                 g.fillOval(x - 3, y - 3, 6, 6);
             }
+
             if (!hoverText.isEmpty()) {
                 g.setColor(Color.BLACK);
-                g.drawString(hoverText, 10, height - 10);
+                g.drawString(hoverText, 10, height - 20);
             }
         }
     }
 }
+
