@@ -228,7 +228,8 @@ public class GUI extends JFrame {
                     .map(p -> p.y)
                     .orElse(0.0));
 
-            double scaleFactor = Math.min(width / (2 * maxX), height / (2 * maxY));
+            //TODO: Zmienić skalowanie okna
+            double scaleFactor = 1;//Math.min(width / (2 * maxX), height / (2 * maxY));
 
             g.setColor(Color.RED);
             for (Point2D.Double point : trajectoryPoints) {
