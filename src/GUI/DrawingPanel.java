@@ -137,7 +137,7 @@ public class DrawingPanel extends JPanel {
             g.drawString(String.format((scaleFactor >= 100) ? "%.2f" : (scaleFactor >= 50) ? "%.1f" : "%.0f", i), (i >= 100) ? centerX - 40 : (i >= 10 && scaleFactor >= 50) ? centerX - 30 : centerX - 20, markYNeg + 5);
         }
 
-        g.setColor(Color.ORANGE);
+        g.setColor(Color.LIGHT_GRAY);
         for (int i = 0; i < trajectoryPoints.size() - 1; i++) {
             TrajectoryPoint start = trajectoryPoints.get(i);
             TrajectoryPoint end = trajectoryPoints.get(i + 1);
@@ -148,7 +148,7 @@ public class DrawingPanel extends JPanel {
             g.drawLine(x1, y1, x2, y2);
         }
 
-        g.setColor(Color.RED);
+        g.setColor(Color.BLUE);
         for (TrajectoryPoint point : trajectoryPoints) {
             int x = (int) ((point.x * scaleFactor) + centerX);
             int y = (int) (centerY - (point.y * scaleFactor));
@@ -158,7 +158,7 @@ public class DrawingPanel extends JPanel {
 
         if (!hoverText.isEmpty()) {
             g.setColor(Color.BLACK);
-            g.drawString(hoverText, 10, getHeight() - 20);
+            g.drawString(hoverText, 10, getHeight() - 10);
         }
     }
 }
