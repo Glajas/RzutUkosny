@@ -124,17 +124,17 @@ public class DrawingPanel extends JPanel {
         for (double i = interval; i * scaleFactor + centerX < 10 * width; i += interval) {
             int markXPos = (int) (i * scaleFactor + centerX);
             g.drawLine(markXPos, centerY - 5, markXPos, centerY + 5);
-            g.drawString(String.format("%.0f", i), markXPos - 15, centerY + 20);
+            g.drawString(String.format((scaleFactor >= 100) ? "%.2f" : (scaleFactor >= 50) ? "%.1f" : "%.0f", i), markXPos - 15, centerY + 20);
 
             int markXNeg = (int) (-i * scaleFactor + centerX);
             g.drawLine(markXNeg, centerY - 5, markXNeg, centerY + 5);
-            g.drawString(String.format("%.0f", -i), markXNeg - 15, centerY + 20);
+            g.drawString(String.format((scaleFactor >= 100) ? "%.2f" : (scaleFactor >= 50) ? "%.1f" : "%.0f", -i), markXNeg - 15, centerY + 20);
         }
 
         for (double i = interval; i * scaleFactor + centerY < 10 * height; i += interval) {
             int markYNeg = (int) (centerY - i * scaleFactor);
             g.drawLine(centerX - 5, markYNeg, centerX + 5, markYNeg);
-            g.drawString(String.format("%.0f", i), centerX - 20, markYNeg + 5);
+            g.drawString(String.format((scaleFactor >= 100) ? "%.2f" : (scaleFactor >= 50) ? "%.1f" : "%.0f", i), (i >= 100) ? centerX - 40 : (i >= 10 && scaleFactor >= 50) ? centerX - 30 : centerX - 20, markYNeg + 5);
         }
 
         g.setColor(Color.ORANGE);
