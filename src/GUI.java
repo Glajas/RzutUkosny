@@ -26,12 +26,12 @@ public class GUI extends JFrame {
     }
 
     private void initializeComponents() {
-        textFieldVelocityX = new JTextField(String.valueOf(physicsEngine.options.getVelocityX()), 5);
-        textFieldDeltaT = new JTextField(String.valueOf(physicsEngine.options.getDeltaT()), 5);
-        textFieldVelocityY = new JTextField(String.valueOf(physicsEngine.options.getVelocityY()), 5);
-        textFieldAirResistance = new JTextField(String.valueOf(physicsEngine.options.getResistance()), 5);
-        textFieldX = new JTextField(String.valueOf(physicsEngine.options.getX()), 5);
-        textFieldY = new JTextField(String.valueOf(physicsEngine.options.getY()), 5);
+        textFieldVelocityX = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getVelocityX()));
+        textFieldDeltaT = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getDeltaT()));
+        textFieldVelocityY = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getVelocityY()));
+        textFieldAirResistance = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getResistance()));
+        textFieldX = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getX()));
+        textFieldY = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getY()));
 
         checkboxUpgradedEuler = new JCheckBox("Use Upgraded Euler's Method", physicsEngine.options.isUpgradedEulersMethod());
         buttonSimulate = new JButton("Simulate");
@@ -53,6 +53,27 @@ public class GUI extends JFrame {
         panelSettings.add(buttonSimulate);
 
         add(panelSettings, BorderLayout.CENTER);
+    }
+
+    private JTextField createTextFieldWithValidation(String defaultValue) {
+        JTextField textField = new JTextField(defaultValue, 5);
+        textField.setInputVerifier(new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                JTextField textField = (JTextField) input;
+                try {
+                    double value = Double.parseDouble(textField.getText());
+                    if (input == textFieldY && value < 0) {
+                        throw new NumberFormatException("Value must be greater than or equal to 0");
+                    }
+                    return true;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(GUI.this, "Invalid input: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        });
+        return textField;
     }
 
     private void setupListeners() {
@@ -188,7 +209,7 @@ public class GUI extends JFrame {
             g.drawLine(centerX, 0, centerX, height);
 
             double interval = scaleFactor >= 100 ? 0.25 : scaleFactor >= 50 ? 0.5 : scaleFactor >= 20 ? 1.0 : scaleFactor >= 15 ? 2.0 : scaleFactor >= 10 ? 2.5 : scaleFactor >= 8 ? 4.0 : scaleFactor >= 5 ? 5.0 : 10.0;
-            for (double i = interval; i * scaleFactor + centerX < width; i += interval) {
+            for (double i = -100; i <= 100; i += interval) {
                 int markXPos = (int) (i * scaleFactor + centerX);
                 g.drawLine(markXPos, centerY - 5, markXPos, centerY + 5);
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), markXPos - 15, centerY - 10);
@@ -198,11 +219,7 @@ public class GUI extends JFrame {
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), -i), markXNeg - 15, centerY - 10);
             }
 
-            for (double i = interval; i * scaleFactor + centerY < height; i += interval) {
-                int markYPos = (int) (centerY + i * scaleFactor);
-                g.drawLine(centerX - 5, markYPos, centerX + 5, markYPos);
-                g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), -i), centerX + 10, markYPos + 5);
-
+            for (double i = -100; i <= 100; i += interval) {
                 int markYNeg = (int) (centerY - i * scaleFactor);
                 g.drawLine(centerX - 5, markYNeg, centerX + 5, markYNeg);
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), centerX + 10, markYNeg + 5);

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Zooming, x/y positions of red dots, no panning">
+    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Problems resolved">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
     </list>
@@ -88,7 +88,14 @@
       <option name="project" value="LOCAL" />
       <updated>1710976405727</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Panning, problems with axis disappearing">
+      <created>1710978391641</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710978391641</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,6 +115,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="xd" />
     <MESSAGE value="Zooming, x/y positions of red dots, no panning" />
-    <option name="LAST_COMMIT_MESSAGE" value="Zooming, x/y positions of red dots, no panning" />
+    <MESSAGE value="Panning, problems with axis disappearing" />
+    <MESSAGE value="Problems resolved" />
+    <option name="LAST_COMMIT_MESSAGE" value="Problems resolved" />
   </component>
 </project>
