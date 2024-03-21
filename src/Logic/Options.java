@@ -1,3 +1,7 @@
+package Logic;
+
+import Logic.PhysicsEngine;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +18,7 @@ public class Options {
     public Options() {
         this.x = 0;
         this.y = 1.0;
-        this.velocityX = 2*PhysicsEngine.GRAVITY;
+        this.velocityX = 2* PhysicsEngine.GRAVITY;
         this.velocityY = PhysicsEngine.GRAVITY;
         this.airResistance = 0.43;
         this.deltaT = 0.1;

@@ -1,4 +1,5 @@
-import java.awt.geom.Point2D;
+package Logic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,11 +7,23 @@ public class PhysicsEngine {
     public static final double GRAVITY = 9.807;
     public Options options;
 
+    public static class TrajectoryPoint {
+        public final double x, y, velocityX, velocityY, time;
+
+        public TrajectoryPoint(double x, double y, double velocityX, double velocityY, double time) {
+            this.x = x;
+            this.y = y;
+            this.velocityX = velocityX;
+            this.velocityY = velocityY;
+            this.time = time;
+        }
+    }
+
     public PhysicsEngine() {
         this.options = new Options();
     }
 
-    public List<Point2D.Double> simulateProjectile(Options options) {
+    public List<TrajectoryPoint> simulateProjectile(Options options) {
         double posX = options.getX();
         double posY = options.getY();
         double velX = options.getVelocityX();
@@ -18,10 +31,11 @@ public class PhysicsEngine {
         double airResistance = options.getResistance();
         boolean useImprovedEuler = options.isUpgradedEulersMethod();
         double deltaT = options.getDeltaT();
-        List<Point2D.Double> trajectory = new ArrayList<>();
+        List<TrajectoryPoint> trajectory = new ArrayList<>();
+        double time = 0.0;
 
         while (posY >= 0) {
-            trajectory.add(new Point2D.Double(posX, posY));
+            trajectory.add(new TrajectoryPoint(posX, posY, velX, velY, time));
             double accX = -airResistance * velX;
             double accY = -GRAVITY - airResistance * velY;
 
@@ -38,10 +52,10 @@ public class PhysicsEngine {
                 velX += accX * deltaT;
                 velY += accY * deltaT;
             }
-            if (posY < 0) {
-                break;
-            }
+
+            time += deltaT;
         }
+
         return trajectory;
     }
 }
