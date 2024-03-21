@@ -38,6 +38,7 @@ public class DrawingPanel extends JPanel {
         buttonPanel.add(buttonDecreaseScale);
         buttonPanel.add(buttonIncreaseScale);
         this.add(buttonPanel, BorderLayout.NORTH);
+
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -54,7 +55,7 @@ public class DrawingPanel extends JPanel {
                     int dy = e.getY() - dragStartPoint.y;
                     viewOffset.x += dx;
                     double potentialYOffset = viewOffset.y - dy;
-                    if (getHeight() / 2 + potentialYOffset <= getHeight() / 2) {
+                    if ((double)(getHeight() / 2) + potentialYOffset <= (double)(getHeight() / 2)) {
                         viewOffset.y -= dy;
                     }
                     dragStartPoint = e.getPoint();
@@ -62,6 +63,7 @@ public class DrawingPanel extends JPanel {
                 }
             }
         });
+
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 dragStartPoint = e.getPoint();
@@ -108,14 +110,14 @@ public class DrawingPanel extends JPanel {
     private boolean isPointUnderMouse(TrajectoryPoint point, int mouseX, int mouseY) {
         int centerX = (int) (getWidth() / 2 + viewOffset.x);
         int centerY = (int) (getHeight() / 2 - viewOffset.y);
-        int x = (int) ((point.x * scaleFactor) + centerX);
-        int y = (int) (centerY - (point.y * scaleFactor));
+        int x = (int) ((point.x() * scaleFactor) + centerX);
+        int y = (int) (centerY - (point.y() * scaleFactor));
         return mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3;
     }
 
     private void updateHoverTextWithPoint(TrajectoryPoint point) {
         hoverText = String.format("X: %.2f, Y: %.2f, VelX: %.2f m/s, VelY: %.2f m/s, Time: %.2f s",
-                point.x, point.y, point.velocityX, point.velocityY, point.time);
+                point.x(), point.y(), point.velocityX(), point.velocityY(), point.time());
     }
 
     private void updateHoverText(int mouseX, int mouseY) {
@@ -123,11 +125,11 @@ public class DrawingPanel extends JPanel {
         int centerX = (int) (getWidth() / 2 + viewOffset.x);
         int centerY = (int) (getHeight() / 2 - viewOffset.y);
         for (TrajectoryPoint point : trajectoryPoints) {
-            int x = (int) ((point.x * scaleFactor) + centerX);
-            int y = (int) (centerY - (point.y * scaleFactor));
+            int x = (int) ((point.x() * scaleFactor) + centerX);
+            int y = (int) (centerY - (point.y() * scaleFactor));
             if (mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3) {
                 hoverText = String.format("X: %.2f, Y: %.2f, VelX: %.2f m/s, VelY: %.2f m/s, Time: %.2f s",
-                        point.x, point.y, point.velocityX, point.velocityY, point.time);
+                        point.x(), point.y(), point.velocityX(), point.velocityY(), point.time());
                 break;
             }
         }
@@ -180,18 +182,18 @@ public class DrawingPanel extends JPanel {
         for (int i = 0; i < trajectoryPoints.size() - 1; i++) {
             TrajectoryPoint start = trajectoryPoints.get(i);
             TrajectoryPoint end = trajectoryPoints.get(i + 1);
-            int x1 = (int) ((start.x * scaleFactor) + centerX);
-            int y1 = (int) (centerY - (start.y * scaleFactor));
-            int x2 = (int) ((end.x * scaleFactor) + centerX);
-            int y2 = (int) (centerY - (end.y * scaleFactor));
+            int x1 = (int) ((start.x() * scaleFactor) + centerX);
+            int y1 = (int) (centerY - (start.y() * scaleFactor));
+            int x2 = (int) ((end.x() * scaleFactor) + centerX);
+            int y2 = (int) (centerY - (end.y() * scaleFactor));
             g.drawLine(x1, y1, x2, y2);
         }
 
         g.setColor(Color.BLUE);
         for (int i = 0; i < trajectoryPoints.size(); i++) {
             TrajectoryPoint point = trajectoryPoints.get(i);
-            int x = (int) ((point.x * scaleFactor) + centerX);
-            int y = (int) (centerY - (point.y * scaleFactor));
+            int x = (int) ((point.x() * scaleFactor) + centerX);
+            int y = (int) (centerY - (point.y() * scaleFactor));
             if (selectedPointIndex != null && selectedPointIndex == i) {
                 g.setColor(Color.RED);
             } else {
@@ -199,7 +201,6 @@ public class DrawingPanel extends JPanel {
             }
             g.fillOval(x - 3, y - 3, 6, 6);
         }
-
 
         if (!hoverText.isEmpty()) {
             g.setColor(Color.BLACK);

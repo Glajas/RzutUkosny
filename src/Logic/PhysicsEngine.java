@@ -7,16 +7,7 @@ public class PhysicsEngine {
     public static final double GRAVITY = 9.807;
     public Options options;
 
-    public static class TrajectoryPoint {
-        public final double x, y, velocityX, velocityY, time;
-
-        public TrajectoryPoint(double x, double y, double velocityX, double velocityY, double time) {
-            this.x = x;
-            this.y = y;
-            this.velocityX = velocityX;
-            this.velocityY = velocityY;
-            this.time = time;
-        }
+    public record TrajectoryPoint(double x, double y, double velocityX, double velocityY, double time) {
     }
 
     public PhysicsEngine() {
@@ -44,14 +35,12 @@ public class PhysicsEngine {
                 double velYHalfStep = velY + accY * (deltaT / 2);
                 posX += velXHalfStep * deltaT;
                 posY += velYHalfStep * deltaT;
-                velX += accX * deltaT;
-                velY += accY * deltaT;
             } else {
                 posX += velX * deltaT;
                 posY += velY * deltaT;
-                velX += accX * deltaT;
-                velY += accY * deltaT;
             }
+            velX += accX * deltaT;
+            velY += accY * deltaT;
 
             time += deltaT;
         }

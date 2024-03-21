@@ -13,7 +13,7 @@ public class Options {
     private double airResistance;
     private boolean isUpgradedEulersMethod;
     private double deltaT;
-    private Map<String, String> changesLog;
+    private final Map<String, String> changesLog;
 
     public Options() {
         this.x = 0;

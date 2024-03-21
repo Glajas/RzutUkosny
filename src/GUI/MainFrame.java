@@ -9,7 +9,7 @@ import Logic.PhysicsEngine;
 import Logic.PhysicsEngine.TrajectoryPoint;
 
 public class MainFrame extends JFrame {
-    private PhysicsEngine physicsEngine;
+    private final PhysicsEngine physicsEngine;
     private JTextField textFieldDeltaT, textFieldVelocityX, textFieldVelocityY, textFieldAirResistance, textFieldX, textFieldY;
     private JCheckBox checkboxUpgradedEuler;
     private JButton buttonSimulate;
