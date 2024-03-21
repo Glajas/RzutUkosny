@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Problems resolved">
+    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Problems resolved, added text field validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Options.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PhysicsEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PhysicsEngine.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1710978391641</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Problems resolved, added text field validation">
+      <created>1710980147264</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710980147264</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +126,7 @@
     <MESSAGE value="Zooming, x/y positions of red dots, no panning" />
     <MESSAGE value="Panning, problems with axis disappearing" />
     <MESSAGE value="Problems resolved" />
-    <option name="LAST_COMMIT_MESSAGE" value="Problems resolved" />
+    <MESSAGE value="Problems resolved, added text field validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Problems resolved, added text field validation" />
   </component>
 </project>

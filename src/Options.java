@@ -29,43 +29,43 @@ public class Options {
 
     public void setX(double x) {
         if(x != this.x)
-            logChange("x", "Changing option X position to: %.1f (m)%n", x);
+            logChange("x", "X position: %.1f (m)%n", x);
         this.x = x;
     }
 
     public void setY(double y) {
         if(y != this.y)
-            logChange("y", "Changing option Y position to: %.1f (m)%n", y);
+            logChange("y", "Y position: %.1f (m)%n", y);
         this.y = y;
     }
 
     public void setVelocityX(double velocityX) {
         if(velocityX != this.velocityX)
-            logChange("velocityX", "Changing option VelocityX to: %.2f (m/s)%n", velocityX);
+            logChange("velocityX", "VelocityX: %.2f (m/s)%n", velocityX);
         this.velocityX = velocityX;
     }
 
     public void setVelocityY(double velocityY) {
         if(velocityY != this.velocityY)
-            logChange("velocityY", "Changing option VelocityY to: %.2f (m/s)%n", velocityY);
+            logChange("velocityY", "VelocityY: %.2f (m/s)%n", velocityY);
         this.velocityY = velocityY;
     }
 
     public void setDeltaT(double deltaT) {
         if(deltaT != this.deltaT)
-            logChange("deltaT", "Changing option Delta t to: %.2f%n", deltaT);
+            logChange("deltaT", "Delta t: %.2f%n", deltaT);
         this.deltaT = deltaT;
     }
 
     public void setAirResistance(double airResistance) {
         if(airResistance != this.airResistance)
-            logChange("airResistance", "Changing option Air Resistance to: %.2f%n", airResistance);
+            logChange("airResistance", "Air Resistance: %.2f%n", airResistance);
         this.airResistance = airResistance;
     }
 
     public void setUpgradedEulersMethod(boolean isUpgradedEulersMethod) {
         if(isUpgradedEulersMethod != this.isUpgradedEulersMethod)
-            logChange("upgradedEulersMethod", "Setting Upgraded Euler's Method to: %s%n", isUpgradedEulersMethod ? "enabled" : "disabled");
+            logChange("upgradedEulersMethod", "Upgraded Euler's Method: %s%n", isUpgradedEulersMethod ? "enabled" : "disabled");
         this.isUpgradedEulersMethod = isUpgradedEulersMethod;
     }
 

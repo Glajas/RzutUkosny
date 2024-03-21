@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends JFrame {
-    private PhysicsEngine physicsEngine;
+    private final PhysicsEngine physicsEngine;
     private JTextField textFieldDeltaT, textFieldVelocityX, textFieldVelocityY, textFieldAirResistance, textFieldX, textFieldY;
     private JCheckBox checkboxUpgradedEuler;
     private JButton buttonSimulate;
@@ -105,12 +105,12 @@ public class GUI extends JFrame {
         trajectoryFrame.setVisible(true);
     }
 
-    class DrawingPanel extends JPanel {
+    static class DrawingPanel extends JPanel {
         private List<Point2D.Double> trajectoryPoints = new ArrayList<>();
         private double scaleFactor = 15.0;
         private String hoverText = "";
         private Point dragStartPoint = null;
-        private Point2D.Double viewOffset = new Point2D.Double();
+        private final Point2D.Double viewOffset = new Point2D.Double();
 
         public DrawingPanel() {
             setLayout(new BorderLayout());
@@ -120,7 +120,7 @@ public class GUI extends JFrame {
             JButton buttonDecreaseScale = new JButton("-");
 
             buttonIncreaseScale.addActionListener(e -> setScaleFactor(scaleFactor + 1));
-            buttonDecreaseScale.addActionListener(e -> setScaleFactor(Math.max(1, scaleFactor - 1)));
+            buttonDecreaseScale.addActionListener(e -> setScaleFactor(Math.max(1, (scaleFactor >= 4) ? scaleFactor - 1 : scaleFactor)));
 
             buttonPanel.add(buttonDecreaseScale);
             buttonPanel.add(buttonIncreaseScale);
@@ -163,7 +163,7 @@ public class GUI extends JFrame {
                 if (e.getWheelRotation() < 0) {
                     setScaleFactor(scaleFactor + 1);
                 } else {
-                    setScaleFactor(Math.max(1, scaleFactor - 1));
+                    setScaleFactor(Math.max(1, (scaleFactor >= 4) ? scaleFactor - 1 : scaleFactor));
                 }
             });
         }
@@ -209,7 +209,7 @@ public class GUI extends JFrame {
             g.drawLine(centerX, 0, centerX, height);
 
             double interval = scaleFactor >= 100 ? 0.25 : scaleFactor >= 50 ? 0.5 : scaleFactor >= 20 ? 1.0 : scaleFactor >= 15 ? 2.0 : scaleFactor >= 10 ? 2.5 : scaleFactor >= 8 ? 4.0 : scaleFactor >= 5 ? 5.0 : 10.0;
-            for (double i = -100; i <= 100; i += interval) {
+            for (double i = interval; i * scaleFactor + centerX < 5*width; i += interval) {
                 int markXPos = (int) (i * scaleFactor + centerX);
                 g.drawLine(markXPos, centerY - 5, markXPos, centerY + 5);
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), markXPos - 15, centerY - 10);
@@ -219,7 +219,7 @@ public class GUI extends JFrame {
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), -i), markXNeg - 15, centerY - 10);
             }
 
-            for (double i = -100; i <= 100; i += interval) {
+            for (double i = interval; i * scaleFactor + centerY < 5*height; i += interval) {
                 int markYNeg = (int) (centerY - i * scaleFactor);
                 g.drawLine(centerX - 5, markYNeg, centerX + 5, markYNeg);
                 g.drawString(String.format(((scaleFactor >=100) ? "%.2f" : "%.1f"), i), centerX + 10, markYNeg + 5);
