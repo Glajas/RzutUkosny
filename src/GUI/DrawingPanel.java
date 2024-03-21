@@ -17,6 +17,7 @@ public class DrawingPanel extends JPanel {
     private String hoverText = "";
     private Point dragStartPoint = null;
     private final Point2D.Double viewOffset = new Point2D.Double();
+    private Integer selectedPointIndex = null;
 
     public DrawingPanel() {
         setLayout(new BorderLayout());
@@ -40,7 +41,9 @@ public class DrawingPanel extends JPanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                updateHoverText(e.getX(), e.getY());
+                if (selectedPointIndex == null) {
+                    updateHoverText(e.getX(), e.getY());
+                }
                 repaint();
             }
 
@@ -49,8 +52,8 @@ public class DrawingPanel extends JPanel {
                 if (dragStartPoint != null) {
                     int dx = e.getX() - dragStartPoint.x;
                     int dy = e.getY() - dragStartPoint.y;
-                    double potentialYOffset = viewOffset.y - dy;
                     viewOffset.x += dx;
+                    double potentialYOffset = viewOffset.y - dy;
                     if (getHeight() / 2 + potentialYOffset <= getHeight() / 2) {
                         viewOffset.y -= dy;
                     }
@@ -60,9 +63,12 @@ public class DrawingPanel extends JPanel {
             }
         });
         addMouseListener(new MouseAdapter() {
-            @Override
             public void mousePressed(MouseEvent e) {
                 dragStartPoint = e.getPoint();
+                if (e.getClickCount() == 1) {
+                    selectPoint(e.getX(), e.getY());
+                }
+                repaint();
             }
 
             @Override
@@ -70,6 +76,7 @@ public class DrawingPanel extends JPanel {
                 dragStartPoint = null;
             }
         });
+
         addMouseWheelListener(e -> {
             if (e.getWheelRotation() < 0) {
                 setScaleFactor(scaleFactor + 1);
@@ -77,6 +84,38 @@ public class DrawingPanel extends JPanel {
                 setScaleFactor(Math.max(1, (scaleFactor >= 4) ? scaleFactor - 1 : scaleFactor));
             }
         });
+    }
+
+    private void selectPoint(int mouseX, int mouseY) {
+        if (Math.abs(mouseX - dragStartPoint.x) > 5 || Math.abs(mouseY - dragStartPoint.y) > 5) {
+            return;
+        }
+
+        boolean pointFound = false;
+        for (int i = 0; i < trajectoryPoints.size(); i++) {
+            if (isPointUnderMouse(trajectoryPoints.get(i), mouseX, mouseY)) {
+                selectedPointIndex = (selectedPointIndex != null && selectedPointIndex == i) ? null : i;
+                pointFound = true;
+                updateHoverTextWithPoint(trajectoryPoints.get(i));
+                break;
+            }
+        }
+        if (!pointFound) {
+            selectedPointIndex = null;
+        }
+    }
+
+    private boolean isPointUnderMouse(TrajectoryPoint point, int mouseX, int mouseY) {
+        int centerX = (int) (getWidth() / 2 + viewOffset.x);
+        int centerY = (int) (getHeight() / 2 - viewOffset.y);
+        int x = (int) ((point.x * scaleFactor) + centerX);
+        int y = (int) (centerY - (point.y * scaleFactor));
+        return mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3;
+    }
+
+    private void updateHoverTextWithPoint(TrajectoryPoint point) {
+        hoverText = String.format("X: %.2f, Y: %.2f, VelX: %.2f m/s, VelY: %.2f m/s, Time: %.2f s",
+                point.x, point.y, point.velocityX, point.velocityY, point.time);
     }
 
     private void updateHoverText(int mouseX, int mouseY) {
@@ -149,9 +188,15 @@ public class DrawingPanel extends JPanel {
         }
 
         g.setColor(Color.BLUE);
-        for (TrajectoryPoint point : trajectoryPoints) {
+        for (int i = 0; i < trajectoryPoints.size(); i++) {
+            TrajectoryPoint point = trajectoryPoints.get(i);
             int x = (int) ((point.x * scaleFactor) + centerX);
             int y = (int) (centerY - (point.y * scaleFactor));
+            if (selectedPointIndex != null && selectedPointIndex == i) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.BLUE);
+            }
             g.fillOval(x - 3, y - 3, 6, 6);
         }
 
