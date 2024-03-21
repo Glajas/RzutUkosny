@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Problems resolved, added text field validation">
-      <change afterPath="$PROJECT_DIR$/src/GUI/DrawingPanel.java" afterDir="false" />
+    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Reorganized, added extra information to trajectory points on hover.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Logic/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PhysicsEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Logic/PhysicsEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,20 +37,20 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Users/jasgl/OneDrive/Pulpit/PJATK/PSM/RzutUkosny",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jasgl/OneDrive/Pulpit/PJATK/PSM/RzutUkosny&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -107,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1710980147264</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Reorganized, added extra information to trajectory points on hover.">
+      <created>1711041262821</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1711041262821</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +134,7 @@
     <MESSAGE value="Panning, problems with axis disappearing" />
     <MESSAGE value="Problems resolved" />
     <MESSAGE value="Problems resolved, added text field validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Problems resolved, added text field validation" />
+    <MESSAGE value="Reorganized, added extra information to trajectory points on hover." />
+    <option name="LAST_COMMIT_MESSAGE" value="Reorganized, added extra information to trajectory points on hover." />
   </component>
 </project>

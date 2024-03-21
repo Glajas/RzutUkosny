@@ -1,6 +1,8 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.util.List;
 import java.awt.*;
 import Logic.PhysicsEngine;
@@ -33,20 +35,26 @@ public class MainFrame extends JFrame {
         textFieldY = createTextFieldWithValidation(String.valueOf(physicsEngine.options.getY()));
 
         checkboxUpgradedEuler = new JCheckBox("Use Upgraded Euler's Method", physicsEngine.options.isUpgradedEulersMethod());
+
+        Border matteBorder = new EmptyBorder(10, 20, 10, 20);
         buttonSimulate = new JButton("Simulate");
+        buttonSimulate.setBackground(new Color(173, 216, 230));
+        buttonSimulate.setOpaque(true);
+        buttonSimulate.setBorderPainted(false);
+        buttonSimulate.setBorder(matteBorder);
 
         JPanel panelSettings = new JPanel(new GridLayout(0, 2, 10, 10));
-        panelSettings.add(new JLabel("  Velocity X:"));
+        panelSettings.add(new JLabel("  Velocity X (m/s):"));
         panelSettings.add(textFieldVelocityX);
-        panelSettings.add(new JLabel("  Velocity Y:"));
+        panelSettings.add(new JLabel("  Velocity Y (m/s):"));
         panelSettings.add(textFieldVelocityY);
         panelSettings.add(new JLabel("  Air Resistance:"));
         panelSettings.add(textFieldAirResistance);
-        panelSettings.add(new JLabel("  Delta T:"));
+        panelSettings.add(new JLabel("  Delta T (s):"));
         panelSettings.add(textFieldDeltaT);
-        panelSettings.add(new JLabel("  X Position:"));
+        panelSettings.add(new JLabel("  X Position (m):"));
         panelSettings.add(textFieldX);
-        panelSettings.add(new JLabel("  Y Position:"));
+        panelSettings.add(new JLabel("  Y Position (m):"));
         panelSettings.add(textFieldY);
         panelSettings.add(checkboxUpgradedEuler);
         panelSettings.add(buttonSimulate);

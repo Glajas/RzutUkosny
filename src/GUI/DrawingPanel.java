@@ -1,6 +1,8 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.util.List;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -20,7 +22,16 @@ public class DrawingPanel extends JPanel {
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton buttonIncreaseScale = new JButton("+");
+        Border matteBorder = new EmptyBorder(10, 20, 10, 20);
+        buttonIncreaseScale.setBackground(new Color(173, 216, 230));
+        buttonIncreaseScale.setOpaque(true);
+        buttonIncreaseScale.setBorderPainted(false);
+        buttonIncreaseScale.setBorder(matteBorder);
         JButton buttonDecreaseScale = new JButton("-");
+        buttonDecreaseScale.setBackground(new Color(173, 216, 230));
+        buttonDecreaseScale.setOpaque(true);
+        buttonDecreaseScale.setBorderPainted(false);
+        buttonDecreaseScale.setBorder(matteBorder);
         buttonIncreaseScale.addActionListener(e -> setScaleFactor(scaleFactor + 1));
         buttonDecreaseScale.addActionListener(e -> setScaleFactor(Math.max(1, (scaleFactor >= 4) ? scaleFactor - 1 : scaleFactor)));
         buttonPanel.add(buttonDecreaseScale);
