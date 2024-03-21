@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Reorganized, added extra information to trajectory points on hover.">
+    <list default="true" id="3f4a4dad-829b-4b93-b5bd-e3a41092f292" name="Changes" comment="Button stylization">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/DrawingPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
@@ -111,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1711041262821</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Button stylization">
+      <created>1711041764246</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1711041764246</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,6 +142,7 @@
     <MESSAGE value="Problems resolved" />
     <MESSAGE value="Problems resolved, added text field validation" />
     <MESSAGE value="Reorganized, added extra information to trajectory points on hover." />
-    <option name="LAST_COMMIT_MESSAGE" value="Reorganized, added extra information to trajectory points on hover." />
+    <MESSAGE value="Button stylization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Button stylization" />
   </component>
 </project>

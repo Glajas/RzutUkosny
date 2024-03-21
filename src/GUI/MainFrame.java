@@ -38,7 +38,7 @@ public class MainFrame extends JFrame {
 
         Border matteBorder = new EmptyBorder(10, 20, 10, 20);
         buttonSimulate = new JButton("Simulate");
-        buttonSimulate.setBackground(new Color(173, 216, 230));
+        buttonSimulate.setBackground(new Color(156, 198, 240));
         buttonSimulate.setOpaque(true);
         buttonSimulate.setBorderPainted(false);
         buttonSimulate.setBorder(matteBorder);

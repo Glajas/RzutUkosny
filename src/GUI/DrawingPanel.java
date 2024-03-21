@@ -23,12 +23,12 @@ public class DrawingPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton buttonIncreaseScale = new JButton("+");
         Border matteBorder = new EmptyBorder(10, 20, 10, 20);
-        buttonIncreaseScale.setBackground(new Color(173, 216, 230));
+        buttonIncreaseScale.setBackground(new Color(156, 198, 240));
         buttonIncreaseScale.setOpaque(true);
         buttonIncreaseScale.setBorderPainted(false);
         buttonIncreaseScale.setBorder(matteBorder);
         JButton buttonDecreaseScale = new JButton("-");
-        buttonDecreaseScale.setBackground(new Color(173, 216, 230));
+        buttonDecreaseScale.setBackground(new Color(156, 198, 240));
         buttonDecreaseScale.setOpaque(true);
         buttonDecreaseScale.setBorderPainted(false);
         buttonDecreaseScale.setBorder(matteBorder);
@@ -121,7 +121,7 @@ public class DrawingPanel extends JPanel {
         g.drawLine(centerX, 0, centerX, height);
         double interval = scaleFactor >= 100 ? 0.25 : scaleFactor >= 50 ? 0.5 : scaleFactor >= 20 ? 1.0 : scaleFactor >= 15 ? 2.0 : scaleFactor >= 10 ? 4.0 : scaleFactor >= 8 ? 5.0 : scaleFactor >= 5 ? 8.0 : 10.0;
         g.drawString("(m)", centerX - 22, centerY + 15);
-        for (double i = interval; i * scaleFactor + centerX < width; i += interval) {
+        for (double i = interval; i * scaleFactor + centerX < 10 * width; i += interval) {
             int markXPos = (int) (i * scaleFactor + centerX);
             g.drawLine(markXPos, centerY - 5, markXPos, centerY + 5);
             g.drawString(String.format("%.0f", i), markXPos - 15, centerY + 20);
@@ -131,10 +131,21 @@ public class DrawingPanel extends JPanel {
             g.drawString(String.format("%.0f", -i), markXNeg - 15, centerY + 20);
         }
 
-        for (double i = interval; i * scaleFactor + centerY < height; i += interval) {
+        for (double i = interval; i * scaleFactor + centerY < 10 * height; i += interval) {
             int markYNeg = (int) (centerY - i * scaleFactor);
             g.drawLine(centerX - 5, markYNeg, centerX + 5, markYNeg);
             g.drawString(String.format("%.0f", i), centerX - 20, markYNeg + 5);
+        }
+
+        g.setColor(Color.ORANGE);
+        for (int i = 0; i < trajectoryPoints.size() - 1; i++) {
+            TrajectoryPoint start = trajectoryPoints.get(i);
+            TrajectoryPoint end = trajectoryPoints.get(i + 1);
+            int x1 = (int) ((start.x * scaleFactor) + centerX);
+            int y1 = (int) (centerY - (start.y * scaleFactor));
+            int x2 = (int) ((end.x * scaleFactor) + centerX);
+            int y2 = (int) (centerY - (end.y * scaleFactor));
+            g.drawLine(x1, y1, x2, y2);
         }
 
         g.setColor(Color.RED);
@@ -143,6 +154,7 @@ public class DrawingPanel extends JPanel {
             int y = (int) (centerY - (point.y * scaleFactor));
             g.fillOval(x - 3, y - 3, 6, 6);
         }
+
 
         if (!hoverText.isEmpty()) {
             g.setColor(Color.BLACK);
